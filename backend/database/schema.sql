@@ -142,7 +142,7 @@ DECLARE
 BEGIN
     year_part := TO_CHAR(CURRENT_DATE, 'YYYY');
     
-    SELECT COALESCE(MAX(CAST(SUBSTRING(rfq_number FROM '[0-9]+$') AS INTEGER)), 0) + 1
+    SELECT COALESCE(MAX(CAST(SUBSTRING(rfq_number FROM 'RFQ-' || year_part || '-([0-9]+)') AS INTEGER)), 0) + 1
     INTO seq_num
     FROM rfqs
     WHERE rfq_number LIKE 'RFQ-' || year_part || '-%';
@@ -162,7 +162,7 @@ DECLARE
 BEGIN
     year_part := TO_CHAR(CURRENT_DATE, 'YYYY');
     
-    SELECT COALESCE(MAX(CAST(SUBSTRING(quotation_number FROM '[0-9]+$') AS INTEGER)), 0) + 1
+    SELECT COALESCE(MAX(CAST(SUBSTRING(quotation_number FROM 'QUO-' || year_part || '-([0-9]+)') AS INTEGER)), 0) + 1
     INTO seq_num
     FROM quotations
     WHERE quotation_number LIKE 'QUO-' || year_part || '-%';
@@ -171,4 +171,3 @@ BEGIN
     RETURN new_number;
 END;
 $$ LANGUAGE plpgsql;
-

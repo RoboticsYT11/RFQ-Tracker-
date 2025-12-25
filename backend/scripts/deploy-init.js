@@ -1,10 +1,13 @@
 const { pool } = require('../config/database');
+const fs = require('fs');
+const path = require('path');
+const bcrypt = require('bcryptjs');
 
 async function initializeDatabase() {
   console.log('🚀 Starting database initialization...');
   
   try {
-    // Test database connection
+    // Test database connection first
     const client = await pool.connect();
     console.log('✅ Database connection established');
     
@@ -15,51 +18,70 @@ async function initializeDatabase() {
       WHERE table_schema = 'public' AND table_name = 'users'
     `);
     
-    client.release();
-    
     if (tablesResult.rows.length === 0) {
       console.log('📋 No tables found, running migrations...');
       
-      // Run migrations
-      const { spawn } = require('child_process');
-      const migrate = spawn('node', ['scripts/migrate.js'], { 
-        cwd: __dirname + '/..',
-        stdio: 'inherit' 
-      });
+      // Read and execute schema.sql
+      const schemaPath = path.join(__dirname, '../database/schema.sql');
+      const schema = fs.readFileSync(schemaPath, 'utf8');
       
-      migrate.on('close', (code) => {
-        if (code === 0) {
-          console.log('✅ Migrations completed successfully');
-          
-          // Run seeding
-          console.log('🌱 Seeding database with initial data...');
-          const seed = spawn('node', ['scripts/seed.js'], { 
-            cwd: __dirname + '/..',
-            stdio: 'inherit' 
-          });
-          
-          seed.on('close', (seedCode) => {
-            if (seedCode === 0) {
-              console.log('✅ Database initialization completed successfully');
-              process.exit(0);
-            } else {
-              console.error('❌ Seeding failed');
-              process.exit(1);
-            }
-          });
-        } else {
-          console.error('❌ Migration failed');
-          process.exit(1);
-        }
-      });
+      await client.query('BEGIN');
+      await client.query(schema);
+      await client.query('COMMIT');
+      console.log('✅ Database migrations completed successfully');
+      
+      // Seed initial data
+      console.log('🌱 Seeding database with initial data...');
+      await client.query('BEGIN');
+      
+      // Create admin user
+      const adminPassword = await bcrypt.hash('admin123', 10);
+      await client.query(
+        `INSERT INTO users (username, email, password_hash, full_name, role)
+         VALUES ('admin', 'admin@company.com', $1, 'System Administrator', 'admin')
+         ON CONFLICT (username) DO NOTHING`,
+        [adminPassword]
+      );
+      
+      // Create sample users
+      const salesPassword = await bcrypt.hash('sales123', 10);
+      const engineerPassword = await bcrypt.hash('engineer123', 10);
+      
+      await client.query(
+        `INSERT INTO users (username, email, password_hash, full_name, role)
+         VALUES 
+           ('sales1', 'sales1@company.com', $1, 'John Sales', 'sales'),
+           ('engineer1', 'engineer1@company.com', $2, 'Mike Engineer', 'engineer')
+         ON CONFLICT (username) DO NOTHING`,
+        [salesPassword, engineerPassword]
+      );
+      
+      await client.query('COMMIT');
+      console.log('✅ Database seeded successfully');
     } else {
       console.log('✅ Database already initialized');
-      process.exit(0);
     }
+    
+    client.release();
+    console.log('✅ Database initialization completed successfully');
+    
   } catch (error) {
     console.error('❌ Database initialization failed:', error);
-    process.exit(1);
+    throw error;
   }
 }
 
-initializeDatabase();
+// Only run if this file is executed directly
+if (require.main === module) {
+  initializeDatabase()
+    .then(() => {
+      console.log('✅ Database initialization completed');
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.error('❌ Database initialization failed:', error);
+      process.exit(1);
+    });
+}
+
+module.exports = { initializeDatabase };

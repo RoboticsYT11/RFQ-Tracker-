@@ -14,8 +14,9 @@ const dashboardRoutes = require('./routes/dashboard');
 const userRoutes = require('./routes/users');
 const reportRoutes = require('./routes/reports');
 
-// Import database connection
+// Import database connection and initialization
 const { pool } = require('./config/database');
+const { initializeDatabase } = require('./scripts/deploy-init');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -89,6 +90,12 @@ app.use((err, req, res, next) => {
 // Initialize database and start server
 async function startServer() {
   try {
+    // Initialize database (migrations and seeding)
+    if (process.env.NODE_ENV === 'production') {
+      console.log('🔄 Initializing database for production...');
+      await initializeDatabase();
+    }
+    
     // Test database connection
     const client = await pool.connect();
     console.log('✅ Database connected successfully');
