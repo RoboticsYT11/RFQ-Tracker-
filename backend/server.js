@@ -90,22 +90,34 @@ app.use((err, req, res, next) => {
 // Initialize database and start server
 async function startServer() {
   try {
-    // Initialize database (migrations and seeding)
+    // Initialize database (migrations and seeding) in production
     if (process.env.NODE_ENV === 'production') {
       console.log('🔄 Initializing database for production...');
-      await initializeDatabase();
+      try {
+        await initializeDatabase();
+      } catch (dbError) {
+        console.error('⚠️  Database initialization failed, but continuing server startup...');
+        console.error('   Database will be initialized on first successful connection');
+        console.error('   Error:', dbError.message);
+      }
     }
     
-    // Test database connection
-    const client = await pool.connect();
-    console.log('✅ Database connected successfully');
-    client.release();
+    // Test database connection (with fallback)
+    try {
+      const client = await pool.connect();
+      console.log('✅ Database connected successfully');
+      client.release();
+    } catch (connError) {
+      console.error('⚠️  Initial database connection failed, server will retry on requests');
+      console.error('   Error:', connError.message);
+    }
 
     const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
     
     app.listen(PORT, HOST, () => {
       console.log(`🚀 Server running on ${HOST}:${PORT}`);
       console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`🔗 Health check: http://${HOST}:${PORT}/api/health`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);

@@ -3,13 +3,34 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
+async function waitForDatabase(maxRetries = 10, delay = 5000) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const client = await pool.connect();
+      console.log('✅ Database connection established');
+      client.release();
+      return true;
+    } catch (error) {
+      console.log(`⏳ Database connection attempt ${i + 1}/${maxRetries} failed. Retrying in ${delay/1000}s...`);
+      console.log(`   Error: ${error.message}`);
+      
+      if (i === maxRetries - 1) {
+        throw error;
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+}
+
 async function initializeDatabase() {
   console.log('🚀 Starting database initialization...');
   
   try {
-    // Test database connection first
+    // Wait for database to be available with retries
+    await waitForDatabase();
+    
     const client = await pool.connect();
-    console.log('✅ Database connection established');
     
     // Check if tables exist
     const tablesResult = await client.query(`
