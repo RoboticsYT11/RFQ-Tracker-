@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+jinja2
+asyncpg
+python-dotenv
+python-multipart
+pydantic-settings
+bcrypt
+pyjwt
+gunicorn

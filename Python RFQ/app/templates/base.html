@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFQ Tracker</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div style="display: flex; min-height: 100vh;">
+        <!-- Sidebar -->
+        <aside style="width: 250px; background-color: #333; color: white; display: flex; flex-direction: column;">
+            <div style="padding: 20px; text-align: center; border-bottom: 1px solid #444;">
+                <h3>RFQ Tracker</h3>
+            </div>
+            <nav style="flex: 1; padding: 20px 0;">
+                <ul style="list-style: none;">
+                    <li>
+                        <a href="/dashboard"
+                            style="display: block; padding: 12px 20px; color: white; text-decoration: none; hover: background-color: #444;">
+                            <i class="fas fa-home" style="margin-right: 10px;"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/rfq" style="display: block; padding: 12px 20px; color: white; text-decoration: none;">
+                            <i class="fas fa-file-invoice" style="margin-right: 10px;"></i> RFQs
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/activities"
+                            style="display: block; padding: 12px 20px; color: white; text-decoration: none;">
+                            <i class="fas fa-tasks" style="margin-right: 10px;"></i> Activities
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div style="padding: 20px; border-top: 1px solid #444;">
+                <a href="/logout" style="color: #bbb; text-decoration: none;">Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main style="flex: 1; display: flex; flex-direction: column;">
+            <header
+                style="padding: 20px; background: white; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
+                <h2>{{ title | default('Overview') }}</h2>
+                <div class="user-info">
+                    <!-- User info here -->
+                </div>
+            </header>
+            <div style="padding: 30px; overflow-y: auto; height: calc(100vh - 73px);">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
