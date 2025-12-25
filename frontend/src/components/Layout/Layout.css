@@ -1,0 +1,61 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0;
+}
+
+.header .user-info {
+  margin-right: 12px;
+  color: white;
+  font-size: 14px;
+}
+
+.user-info {
+  margin-right: 12px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Header logo styling */
+.header-logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 16px;
+}
+
+.header-logo-image {
+  max-height: 40px;
+  max-width: 120px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  /* Removed the white filter to show original logo colors */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .header-logo {
+    justify-content: center;
+    padding-left: 0;
+  }
+  
+  .header-logo-image {
+    max-height: 30px;
+    max-width: 100px;
+  }
+  
+  .header-actions {
+    justify-content: center !important;
+  }
+}

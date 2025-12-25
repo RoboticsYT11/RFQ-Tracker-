@@ -1,0 +1,148 @@
+.rfq-detail {
+  max-width: 1400px;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.detail-header h2 {
+  font-size: 28px;
+  color: #800020;
+  margin-bottom: 4px;
+}
+
+.customer-name {
+  font-size: 18px;
+  color: #666;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.detail-section {
+  background: #fffef7; /* Pale yellow background */
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 1px solid #f0f0f0;
+}
+
+.detail-section h3 {
+  font-size: 20px;
+  color: white;
+  margin: -24px -24px 16px -24px;
+  padding: 16px 24px;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Colorful section headers */
+.detail-section:nth-child(1) h3 {
+  background: linear-gradient(135deg, #ff8c42, #ff6b1a); /* Orange gradient */
+}
+
+.detail-section:nth-child(2) h3 {
+  background: linear-gradient(135deg, #ff69b4, #ff1493); /* Pink gradient */
+}
+
+.detail-section:nth-child(3) h3 {
+  background: linear-gradient(135deg, #90ee90, #32cd32); /* Light green gradient */
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.info-item label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.info-item div {
+  font-size: 14px;
+  color: #333;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fffef7; /* Pale yellow background */
+  padding: 24px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid #f0f0f0;
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .detail-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Specific styling for Quotations and Status History sections */
+.quotations-section h3 {
+  background: linear-gradient(135deg, #ffeb3b, #ffc107) !important; /* Yellow gradient for Quotations */
+}
+
+.status-history-section h3 {
+  background: linear-gradient(135deg, #87ceeb, #4fc3f7) !important; /* Sky blue gradient for Status History */
+}

@@ -1,0 +1,120 @@
+.rfq-form {
+  max-width: 1200px;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.form-header h2 {
+  font-size: 28px;
+  color: #333;
+}
+
+.rfq-form-container {
+  background: transparent;
+  padding: 0;
+}
+
+.form-section-box {
+  background: #fffef7; /* Pale yellow background */
+  padding: 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 1px solid #f0f0f0;
+  margin-bottom: 48px; /* 12 line space between sections */
+  overflow: hidden;
+}
+
+.form-section-box:last-of-type {
+  margin-bottom: 24px; /* Less space before buttons */
+}
+
+.form-section-box h3 {
+  font-size: 20px;
+  color: white;
+  margin: 0 0 24px 0;
+  padding: 16px 24px;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.form-section-box .form-grid,
+.form-section-box .form-group {
+  padding: 0 24px;
+}
+
+.form-section-box .form-group:last-child {
+  padding-bottom: 24px;
+}
+
+/* Form Actions - Bottom Right */
+.form-actions-bottom {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 32px;
+  padding: 20px 0;
+}
+
+.form-section h3,
+.form-section-box h3 {
+  font-size: 20px;
+  color: white;
+  margin: 0 0 24px 0;
+  padding: 16px 24px;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Colorful section headers for RFQ Form */
+.basic-info-section h3 {
+  background: linear-gradient(135deg, #ffeb3b, #ffc107); /* Yellow gradient for Basic Information */
+}
+
+.rfq-details-section h3 {
+  background: linear-gradient(135deg, #2196f3, #1976d2); /* Blue gradient for RFQ Details */
+}
+
+.assignment-value-section h3 {
+  background: linear-gradient(135deg, #4caf50, #388e3c); /* Green gradient for Assignment & Value */
+}
+
+.additional-info-section h3 {
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2); /* Purple gradient for Additional Information */
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.date-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
