@@ -3,6 +3,7 @@ services:
     name: rfq-tracker
     env: node
     plan: free
+    region: singapore
     buildCommand: npm run build:all
     startCommand: npm start
     envVars:
@@ -36,3 +37,4 @@ databases:
     databaseName: rfq_tracker
     user: rfq_user
     plan: free
+    region: singapore
