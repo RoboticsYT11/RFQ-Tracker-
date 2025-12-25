@@ -21,7 +21,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || '*',
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -89,8 +94,10 @@ async function startServer() {
     console.log('✅ Database connected successfully');
     client.release();
 
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
+    const HOST = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+    
+    app.listen(PORT, HOST, () => {
+      console.log(`🚀 Server running on ${HOST}:${PORT}`);
       console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
   } catch (error) {
