@@ -1,56 +1,16 @@
 services:
-  # PostgreSQL Database
-  - type: pserv
-    name: rfq-tracker-db
-    databaseName: rfq_tracker
-    databaseUser: postgres
-    region: oregon
-
-  # Backend API Service
   - type: web
-    name: rfq-tracker-backend
+    name: rfq-tracker
     env: node
-    region: oregon
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && node server.js
+    plan: free
+    buildCommand: npm run build:all
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 10000
-      - key: DB_HOST
-        fromDatabase:
-          name: rfq-tracker-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: rfq-tracker-db
+        fromService:
+          type: web
+          name: rfq-tracker
           property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: rfq-tracker-db
-          property: database
-      - key: DB_USER
-        fromDatabase:
-          name: rfq-tracker-db
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: rfq-tracker-db
-          property: password
-      - key: JWT_SECRET
-        generateValue: true
-      - key: JWT_EXPIRE
-        value: 7d
-      - key: CORS_ORIGIN
-        value: "*"
-
-  # Frontend Service
-  - type: web
-    name: rfq-tracker-frontend
-    env: static
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/build
-    envVars:
-      - key: REACT_APP_API_URL
-        value: https://rfq-tracker-backend.onrender.com/api
+    autoDeploy: false
