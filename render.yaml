@@ -50,7 +50,6 @@ services:
   - type: web
     name: rfq-tracker-frontend
     env: static
-    region: oregon
     plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/build

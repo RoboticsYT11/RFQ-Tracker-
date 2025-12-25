@@ -1,0 +1,38 @@
+services:
+  # Backend API Service
+  - type: web
+    name: rfq-tracker-backend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE
+        value: 7d
+      - key: CORS_ORIGIN
+        value: "*"
+      # Database variables - will be added manually after creating PostgreSQL
+
+  # Frontend Service  
+  - type: web
+    name: rfq-tracker-frontend
+    env: static
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://rfq-tracker-backend.onrender.com/api
+
+databases:
+  - name: rfq-tracker-db
+    databaseName: rfq_tracker
+    user: postgres
+    plan: free
