@@ -21,6 +21,7 @@
     "pg-pool": "^3.6.1",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
+    "express-validator": "^7.0.1",
     "multer": "^1.4.5-lts.1",
     "date-fns": "^2.30.0"
   },
