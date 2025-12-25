@@ -30,10 +30,11 @@ function checkRenderConfig() {
 function checkBackendPackage() {
   try {
     const packageJson = JSON.parse(fs.readFileSync('backend/package.json', 'utf8'));
-    const hasCorrectStart = packageJson.scripts.start.includes('deploy-init.js');
+    const hasStartScript = packageJson.scripts.start === 'node server.js';
     const hasRequiredDeps = packageJson.dependencies.express && packageJson.dependencies.pg;
+    const hasDeployInitScript = packageJson.scripts['deploy-init'];
     
-    if (hasCorrectStart && hasRequiredDeps) {
+    if (hasStartScript && hasRequiredDeps && hasDeployInitScript) {
       checks.push({ name: 'Backend Package', status: '✅', details: 'Scripts and dependencies configured' });
     } else {
       checks.push({ name: 'Backend Package', status: '❌', details: 'Missing required scripts or dependencies' });
